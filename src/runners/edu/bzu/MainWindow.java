@@ -564,44 +564,20 @@ public class MainWindow {
 						HuffmanNode tempNode = tree.getRoot();
 						String tempHuffCode = "";
 						String temp = "";
-						for (int i = 0; i < actualSize && position < fileBytes.length;position++) {
+						for (; position < fileBytes.length;position++) {
 							tempHuffCode = MyConverter.byteToBinary(fileBytes[position]);
-							for (int j = 0; j < tempHuffCode.length(); j++) {
+							for (int j = 0, i=0; i< actualSize && j < tempHuffCode.length(); j++) {
 								
 								char c = tempHuffCode.charAt(j);
-								temp = temp+c;
+								temp = temp + c;
 								byte bt;
-								for(int k = 0; k < 256; k++) {
-									if(temp.equals(codes[k])) {
-										bt = (byte) k;
-										if (buffer.position() == buffer.limit()) {
-											buffer.flip();
-											try {
-												fc.write(buffer);
-												buffer.clear();
-											} catch (IOException e) {
-												// TODO Auto-generated catch block
-												e.printStackTrace();
-											}
-										}
-										if(i < actualSize) {
-											buffer.put(bt);
-											i++;
-										}
-										temp = "";
-										break;
-									}
-								}
-								
-								
 
-								/*if (c == '1') {
+								if (c == '1') {
 									tempNode = tempNode.getRight();
 								} else {
 									tempNode = tempNode.getLeft();
 								}
 
-								if (tempNode != null) {
 									if (tempNode.getLeft() == null && tempNode.getRight() == null) {
 										if (buffer.position() == buffer.limit()) {
 											buffer.flip();
@@ -609,21 +585,17 @@ public class MainWindow {
 												fc.write(buffer);
 												buffer.clear();
 											} catch (IOException e) {
-												 TODO Auto-generated catch block
 												e.printStackTrace();
 											}
 										}
 
-										System.out.println(tempNode.getCh() + "     " +(byte) tempNode.getCh()+ "      " + i + "      "+ tempHuffCode+ "        " + j);
 										buffer.put((byte) tempNode.getCh());
-
-										
-										tempHuffCode = tempHuffCode.substring(j+1);
+										i++;
+										temp = "";
 										tempNode = tree.getRoot();
 									} 
-								}*/
-							}
 
+							}
 						}
 						
 						if(buffer.remaining() != 0) {
@@ -636,11 +608,6 @@ public class MainWindow {
 								e.printStackTrace();
 							}
 						}
-						/*
-						 * // Print the header and clear the buffer buffer.flip(); try {
-						 * fc.write(buffer); buffer.clear(); } catch (IOException e1) { // TODO
-						 * Auto-generated catch block e1.printStackTrace(); }
-						 */
 
 					}
 
